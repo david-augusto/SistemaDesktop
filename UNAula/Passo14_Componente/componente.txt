@@ -1,0 +1,80 @@
+unit ComboBoxIndexes;
+// LIB\dclusr.dpk	Arquivo de componentes
+interface
+uses
+  Windows, Messages, SysUtils, Classes, Controls, StdCtrls, //	Unidades Acrescentadas
+  db, // TDataSource
+  DBTables; // TTable
+
+Type // Herança
+  TComboBoxIndexes = class(TComboBox)
+  private
+    { Private declarations }
+FDataSource:TDataSource; // Propriedade
+PROCEDURE SETDataSource (ds:TDataSource);
+FUNCTION FTable:TTable; // Campo Virtual
+FUNCTION IIF (LCONDICAO:BOOLEAN;
+VTRUE:VARIANT;VFALSE:VARIANT):VARIANT;
+protected
+    { Protected declarations }
+//    procedure Loaded; override;
+  public
+    { Public declarations }
+CONSTRUCTOR CREATE (AOWNER:TCOMPONENT); OVERRIDE;
+    procedure Load;		// Métodos públicos
+    procedure Selecionar;
+    PROPERTY Table :TTable READ FTable;
+  published	
+// Publicados : Visiveis no Object Inspector
+    { Published declarations }
+    PROPERTY DataSource :TDataSource READ FDataSource WRITE SETDataSource;
+
+  end;
+
+procedure Register;
+
+implementation
+procedure Register; // Registro do Componente
+begin
+  RegisterComponents('Samples', [TComboBoxIndexes]);
+end;
+
+CONSTRUCTOR TComboBoxIndexes.CREATE (AOWNER:TCOMPONENT);
+BEGIN // INHERITED = super  em Java
+     INHERITED CREATE (AOWNER);
+     self.Text := 'Escolha o Indice';
+END;
+
+PROCEDURE TComboBoxIndexes.Load; // Carrregar
+VAR BIND:BYTE;
+BEGIN 
+SELF.CLEAR;
+IF (SELF.Table.IndexDefs.Count > 0) THEN
+BEGIN
+FOR BIND := 0 TO SELF.Table.IndexDefs.Count - 1 DO SELF.ITEMS.ADD (SELF.Table.IndexDefs.Items [BIND].NAME + ' ' + IIF ( ixDescending IN  SELF.Table.IndexDefs.Items[BIND].OPTIONS,'«','»'));
+END;
+END;
+
+PROCEDURE TComboBoxIndexes.Selecionar; 
+begin
+  self.Table.IndexName :=   self.Table.IndexDefs.Items [self.itemindex].name;
+end;
+
+PROCEDURE TComboBoxIndexes.SETDATASOURCE  (ds:TDataSource);  // Método set
+BEGIN
+     IF (FDataSource <> ds ) THEN
+               FDataSource := ds;
+END;
+
+FUNCTION TComboBoxIndexes.FTABLE:TTable;
+BEGIN // Método get
+RESULT :=  (SELF.FDATASOURCE.DATASET AS TTable);
+END;
+
+FUNCTION TComboBoxIndexes.IIF(LCONDICAO:BOOLEAN;
+VTRUE:VARIANT;VFALSE:VARIANT):VARIANT;
+BEGIN
+     IF (LCONDICAO) THEN       IIF := VTRUE
+     ELSE         IIF := VFALSE ;
+END;
+end.

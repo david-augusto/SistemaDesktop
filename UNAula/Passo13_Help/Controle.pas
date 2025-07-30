@@ -1,0 +1,202 @@
+unit Controle;
+
+interface
+
+Uses DBTables,StdCtrls, DB,Classes, Dialogs,Forms, Controls;
+// Cabeçalho das funções e procedimentos
+
+FUNCTION IIF (LCONDICAO:BOOLEAN;
+VTRUE:VARIANT;VFALSE:VARIANT):VARIANT;
+PROCEDURE JDSINDEXES (GTable:TTable; VAR CBTEMP:TCOMBOBOX);
+FUNCTION DEFPATH (GDBASE:TDatabase): STRING ;
+FUNCTION AT (CTEXTO:STRING;CTEXTO2:STRING):BYTE; // Procure em CTEXTO, CTEXTO2
+FUNCTION RAT (CTEXTO:STRING;CTEXTO2:STRING):BYTE;
+PROCEDURE ADVERTENCIA (CTEXTO:STRING);
+FUNCTION CONFIRMA (CTEXTO:STRING):BOOLEAN;
+PROCEDURE INFORMACAO (CTEXTO:STRING);
+FUNCTION STRTRAN (CTEXTO:STRING;CTEXT2:STRING;CTEXT3:STRING):STRING;
+FUNCTION STRTRANCS (CTEXTO:STRING;CTEXT2:STRING;CTEXT3:STRING;LCS:BOOLEAN):STRING;
+FUNCTION ALLTRIM (CTEXTO:STRING):STRING;
+FUNCTION TRIM (CTEXTO:STRING;CTIPO:CHAR):STRING;
+FUNCTION UPPER (CTEMP:STRING):STRING;
+
+implementation
+
+PROCEDURE JDSINDEXES (GTable:TTable; VAR CBTEMP:TCOMBOBOX);
+VAR BIND:BYTE;
+BEGIN
+CBTEMP.CLEAR;
+IF (GTable.IndexDefs.Count > 0) THEN
+BEGIN
+   FOR BIND := 0 TO GTable.IndexDefs.Count - 1 DO
+   BEGIN
+       CBTEMP.ITEMS.ADD (GTable.IndexDefs.Items [BIND].NAME +
+       ' ' +IIF ( ixDescending IN GTable.IndexDefs.Items[BIND].OPTIONS,'«','»'));
+   END;
+END;
+END;
+
+FUNCTION IIF (LCONDICAO:BOOLEAN;
+VTRUE:VARIANT;VFALSE:VARIANT):VARIANT;
+BEGIN
+     IF (LCONDICAO) THEN
+        IIF := VTRUE
+     ELSE
+         IIF := VFALSE ;
+END;
+
+
+FUNCTION DEFPATH (GDBASE:TDatabase): STRING ;
+VAR CTEMP:STRING;
+    BPOS : BYTE ;
+    SLAliasParams: TStrings; // Classes
+BEGIN
+     SLAliasParams := TStringList.Create; // Geral
+     Session.GetAliasParams(GDBASE.AliasName,SLAliasParams);
+     CTEMP := STRTRAN (ALLTRIM (SLAliasParams[0]),'PATH=',''); // SERVER NAME=
+     BPOS := POS (':',CTEMP);
+     IF (POS (':',COPY (CTEMP,BPOS + 1,LENGTH (CTEMP) - (BPOS-1) + 1)) > 0) THEN
+     BEGIN
+        CTEMP := COPY (CTEMP,BPOS + 1,LENGTH (CTEMP) - (BPOS-1) + 1);
+     END;
+     RESULT := COPY (CTEMP,1,RAT (CTEMP,'\') - 1);
+END;
+
+FUNCTION AT (CTEXTO:STRING;CTEXTO2:STRING):BYTE;
+{29/05/2001}
+// Procure em CTEXTO, a primeira ocorrência de CTEXTO2
+VAR BTAM:BYTE;BIND:BYTE;BPOS:BYTE;
+BEGIN
+     BTAM := LENGTH (CTEXTO2);
+     BPOS := 0;
+     BIND:= 1;
+     WHILE (BIND <= ( LENGTH (CTEXTO) - BTAM + 1 )) AND (BPOS=0)DO
+     BEGIN
+          IF (COPY (CTEXTO,BIND,BTAM) = CTEXTO2) THEN
+             BPOS := BIND;
+          BIND := BIND + 1;
+     END;
+     RESULT := BPOS;
+END;
+
+FUNCTION RAT (CTEXTO:STRING;CTEXTO2:STRING):BYTE;
+{02/10/2002}
+// Procure em CTEXTO, a última ocorrência de CTEXTO2
+VAR BTAM:BYTE;BIND:BYTE;BPOS:BYTE;
+BEGIN
+     BTAM := LENGTH (CTEXTO2);
+     BPOS := 0;
+     BIND:= LENGTH (CTEXTO);
+     WHILE (BIND >=  1 ) AND (BPOS = 0) DO
+     BEGIN
+          IF (COPY (CTEXTO,BIND,BTAM) = CTEXTO2) THEN
+             BPOS := BIND;
+          BIND := BIND - 1; // Passo BTAM NUNCA
+     END;
+     RESULT := BPOS;
+END;
+
+PROCEDURE ADVERTENCIA (CTEXTO:STRING);
+{26/08/1998}
+BEGIN
+     MessageDlg (CTEXTO,mtWarning	, [mbOK	], 0) ; // QDialogs
+END;
+
+FUNCTION CONFIRMA (CTEXTO:STRING):BOOLEAN;
+{25/08/1998}
+BEGIN // mrYes => Controls
+     CONFIRMA :=  ( MessageDlg (CTEXTO,mtConfirmation, [mbYes,mbNo], 0) = mrYes ) ;
+END;
+
+PROCEDURE INFORMACAO (CTEXTO:STRING);
+{26/08/1998}
+BEGIN
+     MessageDlg (CTEXTO,mtInformation,[mbOK], 0) ;
+END;
+
+FUNCTION STRTRAN (CTEXTO:STRING;CTEXT2:STRING;CTEXT3:STRING):STRING;
+{17/08/98} //Procure em CTEXTO, CTEXT2 e troque por CTEXT3
+BEGIN
+     STRTRAN := STRTRANCS (CTEXTO,CTEXT2,CTEXT3,FALSE);
+END;
+
+FUNCTION STRTRANCS (CTEXTO:STRING;CTEXT2:STRING;CTEXT3:STRING;LCS:BOOLEAN):STRING;
+{17/08/98} //Procure em CTEXTO, CTEXT2 e troque por CTEXT3, É case sensitive ? LCS
+VAR BIND:BYTE;
+    CTEMP, CTEMP2:STRING;
+BEGIN
+     CTEMP := '';
+     BIND := 1;
+     IF (NOT LCS) THEN CTEXT2 := UPPER (CTEXT2);
+     WHILE ( BIND <= LENGTH (CTEXTO)) DO
+     BEGIN
+          CTEMP2 :=  COPY (CTEXTO,BIND,LENGTH (CTEXT2));
+          IF (NOT LCS ) THEN CTEMP2 := UPPER (CTEMP2);
+          IF ( CTEMP2 = CTEXT2 ) THEN
+          BEGIN
+               CTEMP := CTEMP + CTEXT3;
+               BIND := BIND + LENGTH (CTEXT2) - 1;
+          END
+          ELSE
+          BEGIN
+              CTEMP := CTEMP + CTEXTO [BIND];
+          END;
+          BIND := BIND + 1;
+     END;
+     STRTRANCS := CTEMP ;
+END;
+
+FUNCTION ALLTRIM (CTEXTO:STRING):STRING;
+{15/07/98}
+BEGIN
+     ALLTRIM := TRIM (CTEXTO,'A');
+END;
+
+FUNCTION TRIM (CTEXTO:STRING;CTIPO:CHAR):STRING;
+{15/07/98}
+VAR CRESP:STRING;
+    WIND:WORD;
+
+BEGIN
+     CRESP := '';
+     IF ( CTIPO IN ['L','A'] ) THEN // Left, All
+     BEGIN
+          WIND := 1 ;
+          WHILE ( WIND <= LENGTH (CTEXTO)) AND ( CTEXTO [WIND] = ' ') DO
+          BEGIN
+               WIND := WIND + 1
+          END;
+          IF ( WIND <= LENGTH (CTEXTO)) THEN
+          BEGIN
+             CRESP := COPY (CTEXTO,WIND,LENGTH (CTEXTO) - WIND + 1);
+             CTEXTO := CRESP;
+          END;
+     END;
+     IF ( CTIPO IN ['R','A'] ) THEN // Right, All
+     BEGIN
+          WIND := LENGTH (CTEXTO);
+          WHILE ( WIND >= 1 ) AND( CTEXTO [WIND] = ' ') DO
+          BEGIN
+               WIND := WIND - 1
+          END;
+          IF ( WIND >= 1 ) THEN
+          BEGIN
+             CRESP := COPY (CTEXTO,1,WIND);
+             CTEXTO := CRESP;
+          END;
+     END;
+     TRIM := CRESP;
+END;
+
+FUNCTION UPPER (CTEMP:STRING):STRING;
+VAR ITEMP:INTEGER;
+BEGIN
+     FOR ITEMP := 1 TO LENGTH (CTEMP) DO
+     BEGIN
+          CTEMP [ITEMP] := UPCASE (CTEMP [ITEMP]);
+     END;
+     RESULT := CTEMP;
+END;
+
+
+end.

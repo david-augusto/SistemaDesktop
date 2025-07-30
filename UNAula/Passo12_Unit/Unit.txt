@@ -1,0 +1,21 @@
+PROCEDURE JDSINDEXES (GTable:TTable; VAR CBTEMP:TCOMBOBOX);
+VAR BIND:BYTE;
+BEGIN
+CBTEMP.CLEAR;
+IF (GTable.IndexDefs.Count > 0) THEN
+FOR BIND := 0 TO GTable.IndexDefs.Count - 1 DO
+ BEGIN
+        CBTEMP.ITEMS.ADD (GTable.IndexDefs.Items [BIND].NAME +
+        ' ' +IIF ( ixDescending IN GTable.IndexDefs.Items[BIND].OPTIONS,'«','»'));
+   END;
+END;
+
+FUNCTION IIF (LCONDICAO:BOOLEAN;
+VTRUE:VARIANT;
+VFALSE:VARIANT):VARIANT;
+BEGIN
+     IF (LCONDICAO) THEN
+        IIF := VTRUE
+     ELSE
+         IIF := VFALSE ;
+END;

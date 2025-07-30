@@ -1,0 +1,15 @@
+library CONTROLE;
+//library-construiremos uma DLL e não um EXE
+uses  SysUtils, Classes,
+  Math; // function Power
+{$R *.res}
+FUNCTION JurosCompostos (capital,taxa,tempo:real):real; stdcall;
+BEGIN
+        RESULT := CAPITAL * 
+          POWER ((1 + (TAXA/100)),TEMPO);
+END;
+EXPORTS JurosCompostos;
+// Procedimentos/Funções Exportadas
+begin
+end.
+

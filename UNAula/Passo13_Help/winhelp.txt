@@ -1,0 +1,13 @@
+//informacao (DEFPATH (dmunidad_.DBUNIDADE) + '\'+ Application.Title + '.HLP');
+
+//Chamada do mesmo diretório do banco de dados
+WinHelp (SELF.Handle,PCHAR (DEFPATH (dmunidad_.DBUNIDADE) + '\'+
+Application.Title + '.HLP'),
+HELP_CONTENTS,0);
+
+{ DEFPATH (dmunidad_.DBUNIDADE) = 'C:\PROJETOS\UNIDADE'
+ Application.Title = 'Unidade'}
+
+//Chamada do mesmo diretório do executável
+//WinHelp (SELF.Handle,PCHAR (Application.Title + '.HLP'),
+//HELP_CONTENTS,0);
