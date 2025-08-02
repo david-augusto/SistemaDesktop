@@ -37,7 +37,7 @@ implementation
 
 procedure TForm1.btDividirClick(Sender: TObject);
 var
-num1, num2, resultado: Integer;
+num1, num2, resultado: Rea;
 begin
      num1 := StrToInt(txtNum1.text);
      num2 := StrToInt(txtNum2.text);
