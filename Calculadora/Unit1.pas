@@ -9,17 +9,23 @@ uses
 type
   TForm1 = class(TForm)
     Label1: TLabel;
-    Edit1: TEdit;
+    txtNum1: TEdit;
     Label2: TLabel;
-    Edit2: TEdit;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
+    txtNum2: TEdit;
+    btSomar: TButton;
+    btSubtrair: TButton;
+    btMultiplicar: TButton;
+    btDividir: TButton;
     Label3: TLabel;
-    Edit3: TEdit;
+    txtResultado: TEdit;
+    procedure btSomarClick(Sender: TObject);
+    procedure btSubtrairClick(Sender: TObject);
+    procedure btMultiplicarClick(Sender: TObject);
+    procedure btDividirClick(Sender: TObject);
+
   private
     { Private declarations }
+    procedure calcularResultado(operacao: String);
   public
     { Public declarations }
   end;
@@ -30,5 +36,48 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm1.btSomarClick(Sender: TObject);
+begin
+    calcularResultado('somar');
+end;
+
+procedure TForm1.btSubtrairClick(Sender: TObject);
+begin
+    calcularResultado('subtrair');
+end;
+
+procedure TForm1.btMultiplicarClick(Sender: TObject);
+begin
+    calcularResultado('multiplicar');
+end;
+
+procedure TForm1.btDividirClick(Sender: TObject);
+begin
+  if txtNum2.Text = '0' then showMessage('Não existe divisão por zero')
+    else calcularResultado('dividir');
+end;
+
+procedure TForm1.calcularResultado(operacao : String);
+var
+num1, num2, resultado: Real;
+begin
+     num1 := StrToInt(txtNum1.text);
+     num2 := StrToInt(txtNum2.text);
+
+     if operacao = 'somar' then
+       resultado := num1 + num2;
+
+    if operacao = 'subtrair' then
+       resultado := num1 - num2;
+
+    if operacao = 'multiplicar' then
+       resultado := num1 * num2;
+
+    if operacao = 'dividir' then
+       resultado := num1 / num2;
+
+     txtResultado.text := FloatToStr(resultado);
+end;
 
 end.

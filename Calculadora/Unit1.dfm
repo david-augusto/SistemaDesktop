@@ -35,55 +35,59 @@ object Form1: TForm1
     Height = 15
     Caption = 'Resultado'
   end
-  object Edit1: TEdit
-    Left = 24
+  object txtNum1: TEdit
+    Left = 23
     Top = 56
     Width = 269
     Height = 23
     TabOrder = 0
   end
-  object Edit2: TEdit
-    Left = 24
-    Top = 120
+  object txtNum2: TEdit
+    Left = 23
+    Top = 106
     Width = 269
     Height = 23
     TabOrder = 1
   end
-  object Button1: TButton
-    Left = 24
+  object btSomar: TButton
+    Left = 23
     Top = 184
     Width = 53
     Height = 41
     Caption = '+'
     TabOrder = 2
+    OnClick = btSomarClick
   end
-  object Button2: TButton
+  object btSubtrair: TButton
     Left = 96
     Top = 184
     Width = 53
     Height = 41
     Caption = '-'
     TabOrder = 3
+    OnClick = btSubtrairClick
   end
-  object Button3: TButton
+  object btMultiplicar: TButton
     Left = 168
     Top = 184
     Width = 53
     Height = 41
     Caption = '*'
     TabOrder = 4
+    OnClick = btMultiplicarClick
   end
-  object Button4: TButton
-    Left = 240
+  object btDividir: TButton
+    Left = 247
     Top = 184
     Width = 53
     Height = 41
     Caption = '/'
     TabOrder = 5
+    OnClick = btDividirClick
   end
-  object Edit3: TEdit
-    Left = 24
-    Top = 280
+  object txtResultado: TEdit
+    Left = 23
+    Top = 272
     Width = 269
     Height = 23
     TabOrder = 6
