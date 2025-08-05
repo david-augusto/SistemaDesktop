@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Styles, Vcl.Themes;
 
 type
   TForm1 = class(TForm)
@@ -18,14 +18,19 @@ type
     btDividir: TButton;
     Label3: TLabel;
     txtResultado: TEdit;
+    opcVisual: TRadioGroup;
     procedure btSomarClick(Sender: TObject);
     procedure btSubtrairClick(Sender: TObject);
     procedure btMultiplicarClick(Sender: TObject);
     procedure btDividirClick(Sender: TObject);
+    procedure opcVisualClick(Sender: TObject);
+    procedure txtNum1Change(Sender: TObject);
 
   private
     { Private declarations }
-    procedure calcularResultado(operacao: String);
+    function calcularResultado(num1, num2: Real; operacao: String) : Real;
+    function validarCampos(): Boolean;
+    procedure habilitarBotoes(habilitado: Boolean);
   public
     { Public declarations }
   end;
@@ -37,47 +42,93 @@ implementation
 
 {$R *.dfm}
 
+{ TForm1 }
+
 procedure TForm1.btSomarClick(Sender: TObject);
 begin
-    calcularResultado('somar');
+  if validarCampos then
+    txtResultado.Text := FloatToStr(calcularResultado(StrToFloat(txtNum1.Text), StrToFloat(txtNum2.Text),'somar'));
 end;
 
 procedure TForm1.btSubtrairClick(Sender: TObject);
 begin
-    calcularResultado('subtrair');
+  if validarCampos then
+    txtResultado.Text := FloatToStr(calcularResultado(StrToFloat(txtNum1.Text), StrToFloat(txtNum2.Text),'subtrair'));
 end;
 
 procedure TForm1.btMultiplicarClick(Sender: TObject);
 begin
-    calcularResultado('multiplicar');
+  if validarCampos then
+    txtResultado.Text := FloatToStr(calcularResultado(StrToFloat(txtNum1.Text), StrToFloat(txtNum2.Text),'multiplicar'));
 end;
 
 procedure TForm1.btDividirClick(Sender: TObject);
 begin
-  if txtNum2.Text = '0' then showMessage('Não existe divisão por zero')
-    else calcularResultado('dividir');
+
+  if validarCampos then
+     begin
+        if txtNum2.Text = '0' then
+          showMessage('Impossivel divisão por zero')
+        else
+          txtResultado.Text := FloatToStr(calcularResultado(StrToFloat(txtNum1.Text), StrToFloat(txtNum2.Text),'dividir'));
+     end;
 end;
 
-procedure TForm1.calcularResultado(operacao : String);
+function TForm1.calcularResultado(num1, num2: Real; operacao: String): Real;
 var
-num1, num2, resultado: Real;
+resultado : Real;
 begin
-     num1 := StrToInt(txtNum1.text);
-     num2 := StrToInt(txtNum2.text);
+  resultado := 0;
 
-     if operacao = 'somar' then
-       resultado := num1 + num2;
+    if operacao = 'somar' then
+       resultado:= num1 + num2;
 
     if operacao = 'subtrair' then
-       resultado := num1 - num2;
+       resultado:= num1 - num2;
 
     if operacao = 'multiplicar' then
-       resultado := num1 * num2;
+       resultado:= num1 * num2;
 
     if operacao = 'dividir' then
-       resultado := num1 / num2;
+       resultado:= num1 / num2;
 
-     txtResultado.text := FloatToStr(resultado);
+    result := resultado;
+end;
+
+procedure TForm1.habilitarBotoes(habilitado: Boolean);
+begin
+  btSomar.Enabled := habilitado;
+  btSubtrair.Enabled := habilitado;
+  btMultiplicar.Enabled := habilitado;
+  btDividir.Enabled := habilitado;
+end;
+
+procedure TForm1.opcVisualClick(Sender: TObject);
+begin
+  case opcVisual.ItemIndex  of
+    0: TStyleManager.SetStyle('Windows');
+    1: TStyleManager.SetStyle('Glow');
+    2: TStyleManager.SetStyle('Aqua Light Slate');
+  end;
+
+end;
+
+procedure TForm1.txtNum1Change(Sender: TObject);
+begin
+  if validarCampos then
+     habilitarBotoes(True)
+     else
+     habilitarBotoes(False);
+end;
+
+function TForm1.validarCampos: Boolean;
+begin
+  if (txtNum1.Text = '') or (txtNum2.Text = '') then
+    result := false
+  else
+     Result := true;
 end;
 
 end.
+
+//18:26   Aula7            ..
