@@ -13,6 +13,8 @@ object Form1: TForm1
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
   TextHeight = 15
   object Label1: TLabel
     Left = 8
@@ -49,6 +51,7 @@ object Form1: TForm1
     Width = 269
     Height = 23
     TabOrder = 1
+    OnChange = txtNum1Change
   end
   object btSomar: TButton
     Left = 8

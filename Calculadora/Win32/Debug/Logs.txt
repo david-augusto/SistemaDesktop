@@ -1,0 +1,25 @@
+[05/08/2025 23:02:42] - ----------------------------------
+[05/08/2025 23:02:42] - Aplicação Iniciada
+[05/08/2025 23:02:50] - Soma, num1=3, num2=2, resultado=5
+[05/08/2025 23:02:51] - Subtração, num1=3, num2=2, resultado=1
+[05/08/2025 23:02:52] - Multiplicação, num1=3, num2=2, resultado=6
+[05/08/2025 23:02:53] - Divisão, num1=3, num2=2, resultado=1,5
+[05/08/2025 23:02:58] - Erro de Divisão por zero.
+[05/08/2025 23:03:01] - Aplicação Encerrada
+[05/08/2025 23:03:01] - ----------------------------------
+[05/08/2025 23:04:33] - ----------------------------------
+[05/08/2025 23:04:33] - Aplicação Iniciada
+[05/08/2025 23:04:41] - Soma, num1=1, num2=1, resultado=2
+[05/08/2025 23:04:42] - Subtração, num1=1, num2=1, resultado=0
+[05/08/2025 23:04:42] - Multiplicação, num1=1, num2=1, resultado=1
+[05/08/2025 23:04:43] - Divisão, num1=1, num2=1, resultado=1
+[05/08/2025 23:04:46] - Erro de Divisão por zero.
+[05/08/2025 23:04:47] - Aplicação Encerrada
+[05/08/2025 23:04:47] - ----------------------------------
+[05/08/2025 23:07:44] - ----------------------------------
+[05/08/2025 23:07:44] - Aplicação Iniciada
+[05/08/2025 23:07:47] - Visual da aplicação alterado para Windows
+[05/08/2025 23:07:48] - Visual da aplicação alterado para Aqua Light Slate
+[05/08/2025 23:07:49] - Visual da aplicação alterado para Glow
+[05/08/2025 23:07:50] - Aplicação Encerrada
+[05/08/2025 23:07:50] - ----------------------------------
