@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2025/08/05 23:26:41.603,=C:\Users\david\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/08/05 23:27:43.518,C:\Users\david\Documents\MeusProjetos\SistemaDesktop\CadastroLivros\CadastroLivros.pas=C:\Users\david\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/08/05 23:27:43.518,C:\Users\david\Documents\MeusProjetos\SistemaDesktop\CadastroLivros\CadastroLivros.dfm=C:\Users\david\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2025/08/05 23:28:17.429,C:\Users\david\Documents\MeusProjetos\SistemaDesktop\CadastroLivros\ProjetoCadastroLivros.dproj=C:\Users\david\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
